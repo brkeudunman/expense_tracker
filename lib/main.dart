@@ -1,13 +1,13 @@
-
+import 'package:expense_tracker/screens/home.dart';
 import 'package:flutter/material.dart';
-import 'package:expense_tracker/expenses.dart';
 
-void main(){
+void main() {
   runApp(
-    const MaterialApp(
-      home: Scaffold(
-        body: Expenses(),
+    MaterialApp(
+      theme: ThemeData(
+        useMaterial3: true,
       ),
-    )
+      home: const HomeScreen()
+    ),
   );
 }
