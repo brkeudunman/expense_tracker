@@ -6,7 +6,9 @@ import 'package:expense_tracker/models/expense.dart';
 import 'package:intl/intl.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  final void Function(Expense expense) onAddExpense;
+
+  const NewExpense({super.key, required this.onAddExpense});
 
   @override
   State<NewExpense> createState() {
@@ -19,8 +21,8 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _numberController = TextEditingController();
 
-  DateTime? _selectedDate;
-  Category? _selectedCategory = Category.leisure;
+  DateTime _selectedDate = DateTime.now();
+  Category _selectedCategory = Category.leisure;
 
   void _pickDate() {
     showDatePicker(
@@ -30,7 +32,9 @@ class _NewExpenseState extends State<NewExpense> {
       lastDate: DateTime.now(),
     ).then((value) {
       setState(() {
-        _selectedDate = value;
+        if (value != null) {
+          _selectedDate = value;
+        }
       });
     });
   }
@@ -39,8 +43,8 @@ class _NewExpenseState extends State<NewExpense> {
     var pickedNumber = double.tryParse(_numberController.text);
 
     if (_titleController.text.trim().isEmpty ||
-        pickedNumber!.isNaN ||
-        pickedNumber.isNegative) {
+        pickedNumber == null ||
+        pickedNumber <= 0) {
       showDialog(
           context: context,
           builder: (ctx) {
@@ -59,6 +63,14 @@ class _NewExpenseState extends State<NewExpense> {
           });
       return;
     }
+    widget.onAddExpense(
+      Expense(
+          title: _titleController.text,
+          amount: pickedNumber,
+          dateTime: _selectedDate,
+          category: _selectedCategory),
+    );
+    Navigator.pop(context);
   }
 
   @override
@@ -72,8 +84,11 @@ class _NewExpenseState extends State<NewExpense> {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
+            flex: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -87,10 +102,11 @@ class _NewExpenseState extends State<NewExpense> {
                     keyboardType: TextInputType.text,
                   ),
                 ),
-                const Spacer(
-                  flex: 1,
+                const SizedBox(
+                  width: 40,
                 ),
                 Expanded(
+                  flex: 0,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -123,6 +139,7 @@ class _NewExpenseState extends State<NewExpense> {
             ),
           ),
           Expanded(
+            flex: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -156,7 +173,11 @@ class _NewExpenseState extends State<NewExpense> {
               ],
             ),
           ),
+          const SizedBox(
+            height: 25,
+          ),
           Expanded(
+            flex: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
