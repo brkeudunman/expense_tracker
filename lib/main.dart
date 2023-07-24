@@ -39,19 +39,18 @@ void main() {
             ),
           ),
           textTheme: const TextTheme().copyWith(
-            titleLarge: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-            bodyMedium: TextStyle(
-              color: kColorScheme.onPrimaryContainer,
-            ),
-            bodyLarge: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: kColorScheme.onPrimaryContainer,
-            )
-          ),
+              titleLarge: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+              bodyMedium: TextStyle(
+                color: kColorScheme.onPrimaryContainer,
+              ),
+              bodyLarge: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: kColorScheme.onPrimaryContainer,
+              )),
         ),
         home: const HomeScreen()),
   );
